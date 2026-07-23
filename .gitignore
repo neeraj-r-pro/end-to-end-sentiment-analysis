@@ -20,3 +20,9 @@ __pycache__/
 
 # Logs
 *.log
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
