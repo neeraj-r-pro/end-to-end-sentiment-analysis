@@ -14,3 +14,9 @@ class DataTransformationConfig:
         "artifacts",
         "preprocessor.pkl"
     )
+@dataclass
+class ModelTrainerConfig:
+    trained_model_file_path = os.path.join(
+        "artifacts",
+        "model.pkl"
+    )
