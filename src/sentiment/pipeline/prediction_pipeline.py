@@ -32,7 +32,11 @@ class PredictPipeline:
 
             prediction = model.predict(data_scaled)
 
-            return prediction[0]
+            probability = model.predict_proba(data_scaled)
+
+            confidence = probability.max()
+
+            return prediction[0], float(confidence)
 
         except Exception as e:
             raise CustomException(e, sys)

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SentiScope AI | Intelligent Sentiment Analysis</title>
+  <meta name="description" content="Analyze movie reviews instantly using machine learning. A premium AI-powered sentiment analysis interface." />
+
+  <!-- Fonts: Space Grotesk (display), Inter (body), JetBrains Mono (data/metrics) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Ambient background layer: gradient mesh, neural lines, floating blobs -->
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-gradient"></div>
+    <svg class="bg-neural" viewBox="0 0 1200 800" preserveAspectRatio="none">
+      <g class="neural-lines">
+        <line x1="80" y1="120" x2="340" y2="260" />
+        <line x1="340" y1="260" x2="620" y2="140" />
+        <line x1="620" y1="140" x2="900" y2="300" />
+        <line x1="180" y1="480" x2="420" y2="380" />
+        <line x1="420" y1="380" x2="700" y2="520" />
+        <line x1="700" y1="520" x2="1000" y2="440" />
+        <line x1="900" y1="300" x2="1000" y2="440" />
+        <line x1="340" y1="260" x2="420" y2="380" />
+        <line x1="80" y1="120" x2="180" y2="480" />
+      </g>
+      <g class="neural-nodes">
+        <circle cx="80" cy="120" r="3" />
+        <circle cx="340" cy="260" r="3" />
+        <circle cx="620" cy="140" r="3" />
+        <circle cx="900" cy="300" r="3" />
+        <circle cx="180" cy="480" r="3" />
+        <circle cx="420" cy="380" r="3" />
+        <circle cx="700" cy="520" r="3" />
+        <circle cx="1000" cy="440" r="3" />
+      </g>
+    </svg>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <div class="page">
+
+    <header class="site-header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">
+             SentiScope <span class="brand-accent">AI</span>
+        </span>      
+      </div>
+    </header>
+
+    <main class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Natural language understanding, in real time</p>
+        <h1 class="hero-title">
+            Understand Every<br /> Review with AI        
+        </h1>
+        <p class="hero-subtitle">
+          Paste a movie review below. The model reads it the way a person would —
+          and tells you whether it's a rave or a pan, in under a second.
+        </p>
+      </div>
+
+      <section class="analyzer" aria-label="Sentiment analysis tool">
+        <form id="analyzer-form" class="analyzer-card" novalidate>
+
+          <label for="review-input" class="input-label">Movie review</label>
+          <div class="textarea-wrap">
+            <textarea
+              id="review-input"
+              name="review"
+              class="review-input"
+              placeholder="Enter your movie review here..."
+              rows="6"
+              maxlength="2000"
+              aria-describedby="char-counter input-error"
+              required
+            ></textarea>
+            <div class="textarea-footer">
+              <span id="input-error" class="input-error" role="alert"></span>
+              <span id="char-counter" class="char-counter">0 / 2000</span>
+            </div>
+          </div>
+
+          <button type="submit" id="predict-btn" class="predict-btn">
+            <span class="btn-label">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+              </svg>
+              Analyze Sentiment
+            </span>
+            <span class="btn-loading" aria-hidden="true">
+              <span class="spinner"></span>
+              Analyzing...
+            </span>
+          </button>
+        </form>
+
+        <!-- Result card: populated by script.js once the backend responds -->
+        <div id="result-card" class="result-card" role="status" aria-live="polite" hidden>
+          <div class="result-top">
+            <div class="result-icon-wrap">
+              <svg id="result-icon-positive" class="result-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="9.25" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M8.5 13.2c1 1.1 2.2 1.7 3.5 1.7s2.5-.6 3.5-1.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M8.7 9.8h.01M15.3 9.8h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <svg id="result-icon-negative" class="result-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" hidden>
+                <circle cx="12" cy="12" r="9.25" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M8.5 15.4c1-1.1 2.2-1.7 3.5-1.7s2.5.6 3.5 1.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M8.7 9.8h.01M15.3 9.8h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="result-text">
+              <span id="result-badge" class="result-badge">Positive</span>
+              <p id="result-detail" class="result-detail">The model reads this as an enthusiastic review.</p>
+            </div>
+          </div>
+
+          <div class="confidence-block">
+            <div class="confidence-label-row">
+              <span class="confidence-label">Model confidence</span>
+              <span id="confidence-value" class="confidence-value">0%</span>
+            </div>
+            <div class="confidence-track" aria-hidden="true">
+              <div id="confidence-fill" class="confidence-fill"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Powered by Flask • Scikit-learn • Logistic Regression • TF-IDF</p>
+    </footer>
+
+  </div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
