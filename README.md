@@ -120,7 +120,21 @@ python app.py
 
 ## 📸 Screenshots
 
-Screenshots will be added soon.
+### Home Page
+
+![Home Page](screenshots/home.png)
+
+---
+
+### Positive Prediction
+
+![Positive Prediction](screenshots/positive_prediction.png)
+
+---
+
+### Negative Prediction
+
+![Negative Prediction](screenshots/negative_prediction.png)
 
 ---
 
